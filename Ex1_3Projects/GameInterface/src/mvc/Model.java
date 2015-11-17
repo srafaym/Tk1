@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class Model implements Serializable, Remote{
 
+	//TODO: Add fly position
 	private static final long serialVersionUID = 1L;
 	
 	private HashMap<String, Integer> playersPoints = new HashMap<>();
