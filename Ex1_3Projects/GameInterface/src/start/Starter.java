@@ -40,11 +40,11 @@ public class Starter {
 		try {
 			Model model = (Model) rgs.lookup(RMI_MODEL_ID);
 			Controller controller = new Controller(serverRMI, model);
-			GameClient clientG = new GameClient("Gosho", controller);
-			server.login("Gosho", clientG);
+			GameClient clientA = new GameClient("Alice", controller);
+			server.login("Alice", clientA);
 			Thread.sleep(1000);
-			GameClient clientP = new GameClient("Pesho", controller);
-			server.login("Pesho", clientP);
+			GameClient clientB = new GameClient("Bob", controller);
+			server.login("Bob", clientB);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
