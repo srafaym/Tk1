@@ -10,7 +10,7 @@ import impl.IGameServer;
 public class GameServer extends UnicastRemoteObject implements IGameServer {
 
 	private static final long serialVersionUID = -2961914122660978332L;
-	
+
 	private int height = 380; // height of window - fly size
 	private int width = 580; // width of window - fly size
 	private boolean gameStarted;
@@ -29,13 +29,13 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
 
 		model.addPlayer(playerName);
 		clients.put(playerName, client);
-		if (!gameStarted && clients.size() >= 2) {
+		if (!gameStarted) {
 			startGame();
 			gameStarted = true;
 		} else {
 			client.recieveFlyPosition(lastX, lastY);
 		}
-		for(IGameClient c: clients.values()){
+		for (IGameClient c : clients.values()) {
 			c.receivePlayersPoints(model.getPoints());
 		}
 	}
@@ -45,7 +45,6 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
 		int y = (int) (Math.random() * height);
 		lastX = x;
 		lastY = y;
-		System.out.println(x + " " + y);
 		for (IGameClient client : clients.values()) {
 			try {
 				client.recieveFlyPosition(x, y);
@@ -59,7 +58,7 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
 	public void logout(String playerName) throws RemoteException {
 		model.removePlayer(playerName);
 		clients.remove(playerName);
-		for(IGameClient c: clients.values()){
+		for (IGameClient c : clients.values()) {
 			c.removePlayer(playerName);
 		}
 	}
@@ -73,8 +72,8 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
 		}
 		startGame();
 	}
-	
-	public Model getModel(){
+
+	public Model getModel() {
 		return model;
 	}
 }

@@ -30,7 +30,6 @@ public class Starter {
 			register.bind(RMI_ID, server);
 			register.bind(RMI_MODEL_ID, server.getModel());
 		} catch (AlreadyBoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println("Server is started");
@@ -41,14 +40,11 @@ public class Starter {
 		try {
 			Model model = (Model) rgs.lookup(RMI_MODEL_ID);
 			Controller controller = new Controller(serverRMI, model);
-			GameClient clientG = new GameClient("Gosho", controller);
+			GameClient clientG = new GameClient("Alice", controller);
 			server.login("Gosho", clientG);
 			Thread.sleep(1000);
-			GameClient clientP = new GameClient("Pesho", controller);
+			GameClient clientP = new GameClient("Bob", controller);
 			server.login("Pesho", clientP);
-			Thread.sleep(1000);
-//			GameClient clientT = new GameClient("Tosho", controller);
-//			server.login("Tosho", clientT);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

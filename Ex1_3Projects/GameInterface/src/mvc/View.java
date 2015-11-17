@@ -43,6 +43,7 @@ public class View {
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
+		fly.setVisible(false);
 		// Add a component presenting the model.
 		contentPane.add(fly, BorderLayout.CENTER);
 
@@ -65,16 +66,15 @@ public class View {
 		menuPanel.add(startButton);
 		menuPanel.add(quitButton);
 		menuPanel.add(playersLabel);
-		System.out.println("menu height:" + menuPanel.getPreferredSize());
 
 		contentPane.add(menuPanel, BorderLayout.NORTH);
 
+	
 		fly.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (fly != null) {
 					Point clickPoint = e.getPoint();
-
 					// Fly image has width 53 and height 67
 
 					if (clickPoint.getX() >= fly.getPosX()
@@ -88,7 +88,6 @@ public class View {
 		});
 
 		frame.setLocationByPlatform(true);
-		// Display the window.
 		frame.pack();
 		frame.setVisible(true);
 	}
@@ -97,6 +96,7 @@ public class View {
 		System.out.println(x + " " + y);
 		fly.setPosX(x);
 		fly.setPosY(y);
+		fly.setVisible(true);
 		fly.repaint();
 
 		frame.revalidate();
