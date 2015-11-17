@@ -52,7 +52,7 @@ public class View {
 		FlowLayout experimentLayout = new FlowLayout();
 		menuPanel.setLayout(experimentLayout);
 
-		JButton startButton = new JButton("Do nothing for now");
+//		JButton startButton = new JButton("Do nothing for now");
 		JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(new ActionListener() {
 			@Override
@@ -63,7 +63,7 @@ public class View {
 			}
 		});
 		playersLabel = new JLabel("Players list: ");
-		menuPanel.add(startButton);
+//		menuPanel.add(startButton);
 		menuPanel.add(quitButton);
 		menuPanel.add(playersLabel);
 
@@ -92,10 +92,11 @@ public class View {
 		frame.setVisible(true);
 	}
 
-	public void addFlyAtPosition(int x, int y) {
-		System.out.println(x + " " + y);
-		fly.setPosX(x);
-		fly.setPosY(y);
+	public void addFlyAtPosition(Point point) {
+//		fly.setLocation(point);
+//		System.out.println(x + " " + y);
+		fly.setPosX(point.x);
+		fly.setPosY(point.y);
 		fly.setVisible(true);
 		fly.repaint();
 

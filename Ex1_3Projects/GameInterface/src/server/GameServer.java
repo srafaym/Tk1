@@ -1,5 +1,6 @@
 package server;
 
+import java.awt.Point;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
@@ -11,12 +12,12 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
 
 	private static final long serialVersionUID = -2961914122660978332L;
 
-	private int height = 380; // height of window - fly size
-	private int width = 580; // width of window - fly size
+//	private int height = 380; // height of window - fly size
+//	private int width = 580; // width of window - fly size
 	private boolean gameStarted;
 	private Model model;
 	private HashMap<String, IGameClient> clients = new HashMap<>();
-	int lastX, lastY;
+//	int lastX, lastY;
 
 	public GameServer() throws RemoteException {
 		super();
@@ -30,29 +31,30 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
 		model.addPlayer(playerName);
 		clients.put(playerName, client);
 		if (!gameStarted) {
-			startGame();
+			Point point = model.pickRandomPoint();
+			sendClientsNewFlyPosition(point);
 			gameStarted = true;
 		} else {
-			client.recieveFlyPosition(lastX, lastY);
+			client.recieveFlyPosition(model.getPoint());
 		}
 		for (IGameClient c : clients.values()) {
 			c.receivePlayersPoints(model.getPoints());
 		}
 	}
 
-	private void startGame() {
-		int x = (int) (Math.random() * width);
-		int y = (int) (Math.random() * height);
-		lastX = x;
-		lastY = y;
-		for (IGameClient client : clients.values()) {
-			try {
-				client.recieveFlyPosition(x, y);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+//	private void startGame() {
+//		int x = (int) (Math.random() * width);
+//		int y = (int) (Math.random() * height);
+//		lastX = x;
+//		lastY = y;
+//		for (IGameClient client : clients.values()) {
+//			try {
+//				client.recieveFlyPosition(x, y);
+//			} catch (RemoteException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
 
 	@Override
 	public void logout(String playerName) throws RemoteException {
@@ -70,10 +72,21 @@ public class GameServer extends UnicastRemoteObject implements IGameServer {
 			client.recieveFlyHunted(playerName,
 					model.getPoints().get(playerName));
 		}
-		startGame();
+		Point point = model.pickRandomPoint();
+		sendClientsNewFlyPosition(point);
 	}
 
 	public Model getModel() {
 		return model;
+	}
+	
+	public void sendClientsNewFlyPosition(Point p){
+		for (IGameClient client : clients.values()) {
+			try {
+				client.recieveFlyPosition(p);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

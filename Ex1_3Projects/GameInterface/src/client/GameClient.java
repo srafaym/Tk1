@@ -1,4 +1,5 @@
 package client;
+import java.awt.Point;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
@@ -27,8 +28,8 @@ public class GameClient extends UnicastRemoteObject implements IGameClient {
 	}
 
 	@Override
-	public void recieveFlyPosition(int x, int y) throws RemoteException {
-		view.addFlyAtPosition(x, y);
+	public void recieveFlyPosition(Point point) throws RemoteException {
+		view.addFlyAtPosition(point);
 	}
 
 	@Override
