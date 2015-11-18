@@ -41,10 +41,10 @@ public class Starter {
 		try {
 			Controller controller = new Controller(serverRMI);
 			GameClient clientA = new GameClient("Alice", controller);
-			server.login("Alice", clientA);
+			serverRMI.login("Alice", clientA);
 			Thread.sleep(1000);
 			GameClient clientB = new GameClient("Bob", controller);
-			server.login("Bob", clientB);
+			serverRMI.login("Bob", clientB);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
