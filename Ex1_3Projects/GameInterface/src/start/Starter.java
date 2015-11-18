@@ -11,14 +11,16 @@ import java.rmi.registry.Registry;
 
 import server.GameServer;
 import mvc.Controller;
-import mvc.Model;
 import client.GameClient;
 
+/**
+ * This is the Main class that starts the server and two clients.
+ *
+ */
 public class Starter {
 	
-	public static final String RMI_ID = "TestRMI";
-	public static final int RMI_PORT = 2226;
-	public static final String RMI_MODEL_ID = "Model";
+	public static final String RMI_ID = "RMI_SERVER";
+	public static final int RMI_PORT = 2227;
 
 
 	public static void main(String[] args) throws InterruptedException,
@@ -28,7 +30,6 @@ public class Starter {
 		Registry register = LocateRegistry.createRegistry(RMI_PORT);
 		try {
 			register.bind(RMI_ID, server);
-			register.bind(RMI_MODEL_ID, server.getModel());
 		} catch (AlreadyBoundException e) {
 			e.printStackTrace();
 		}
@@ -38,8 +39,7 @@ public class Starter {
 		IGameServer serverRMI = (IGameServer) rgs.lookup(RMI_ID);
 
 		try {
-			Model model = (Model) rgs.lookup(RMI_MODEL_ID);
-			Controller controller = new Controller(serverRMI, model);
+			Controller controller = new Controller(serverRMI);
 			GameClient clientA = new GameClient("Alice", controller);
 			server.login("Alice", clientA);
 			Thread.sleep(1000);

@@ -16,9 +16,12 @@ import java.util.Map.Entry;
 
 import javax.swing.*;
 
+/**
+ * This class represents the view of the game for every game client. It uses the
+ * controller to send messages to the server, and receives messages from the
+ * Model on the server.
+ */
 public class View {
-
-	private HashMap<String, Integer> points = new HashMap<String, Integer>();
 
 	private JFrame frame;
 	private JLabel playersLabel;
@@ -29,6 +32,8 @@ public class View {
 
 	private FlyImage fly = new FlyImage();
 
+	private Dimension windowSize;
+
 	public View(String playerName, Controller controller) {
 		this.playerName = playerName;
 		this.controller = controller;
@@ -37,22 +42,21 @@ public class View {
 	public void createAndShowGUI() {
 		// Create and set up the window.
 		frame = new JFrame("Catch the fly");
-		frame.setPreferredSize(new Dimension(800, 600));
+
 		frame.setLocationByPlatform(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container contentPane = frame.getContentPane();
 		contentPane.setLayout(new BorderLayout());
 
 		fly.setVisible(false);
-		// Add a component presenting the model.
+		// Add a component presenting the fly.
 		contentPane.add(fly, BorderLayout.CENTER);
 
-		// add buttons and player list
+		// add button quit and player list
 		JPanel menuPanel = new JPanel();
 		FlowLayout experimentLayout = new FlowLayout();
 		menuPanel.setLayout(experimentLayout);
 
-//		JButton startButton = new JButton("Do nothing for now");
 		JButton quitButton = new JButton("Quit");
 		quitButton.addActionListener(new ActionListener() {
 			@Override
@@ -63,13 +67,13 @@ public class View {
 			}
 		});
 		playersLabel = new JLabel("Players list: ");
-//		menuPanel.add(startButton);
 		menuPanel.add(quitButton);
 		menuPanel.add(playersLabel);
 
 		contentPane.add(menuPanel, BorderLayout.NORTH);
 
-	
+		contentPane.setPreferredSize(windowSize);
+
 		fly.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -88,28 +92,22 @@ public class View {
 		});
 
 		frame.setLocationByPlatform(true);
+		// Make the window not resizable, so that the fly is bound to be visible
+		frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
 	}
 
 	public void addFlyAtPosition(Point point) {
-//		fly.setLocation(point);
-//		System.out.println(x + " " + y);
 		fly.setPosX(point.x);
 		fly.setPosY(point.y);
 		fly.setVisible(true);
 		fly.repaint();
-
 		frame.revalidate();
 		frame.repaint();
 	}
 
-	public void changePoints(String playerName, int newPoints) {
-		points.put(playerName, newPoints);
-		printNewPoints();
-	}
-
-	private void printNewPoints() {
+	private void printNewPoints(HashMap<String, Integer> points) {
 		StringBuilder builder = new StringBuilder();
 		for (Entry<String, Integer> entry : points.entrySet()) {
 			builder.append(entry.getKey());
@@ -122,18 +120,11 @@ public class View {
 	}
 
 	public void setPoints(HashMap<String, Integer> points) {
-		this.points = points;
-		printNewPoints();
+		printNewPoints(points);
 	}
 
-	public void removePlayer(String playerName) {
-		this.points.remove(playerName);
-		printNewPoints();
-	}
-
-	public void addPlayer(String playerName) {
-		this.points.put(playerName, 0);
-		printNewPoints();
+	public void receiveWindowSize(Dimension windowSize) {
+		this.windowSize = windowSize;
 	}
 
 }

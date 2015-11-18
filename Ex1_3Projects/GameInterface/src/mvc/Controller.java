@@ -1,15 +1,16 @@
 package mvc;
 
-
 import java.rmi.RemoteException;
-import java.util.HashMap;
-
 import impl.IGameServer;
 
+/**
+ * This class is used from the game clients to pass messages to the server that
+ * forwards them to the model.
+ */
 public class Controller {
 	IGameServer server;
 
-	public Controller(IGameServer server, Model model) {
+	public Controller(IGameServer server) {
 		this.server = server;
 	}
 

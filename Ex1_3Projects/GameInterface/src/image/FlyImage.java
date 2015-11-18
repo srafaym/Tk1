@@ -8,13 +8,16 @@ import javax.swing.JComponent;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * This class represents the fly image.
+ */
 public class FlyImage extends JComponent implements ChangeListener {
 
 	private static final long serialVersionUID = -8479397590475220694L;
 
-	Image i;
-	int posX;
-	int posY;
+	private Image i;
+	private int posX;
+	private int posY;
 
 	public FlyImage() {
 		super();
