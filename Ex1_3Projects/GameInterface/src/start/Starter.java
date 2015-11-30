@@ -1,5 +1,7 @@
 package start;
 
+//import IGameServer;
+
 import impl.IGameServer;
 
 import java.net.MalformedURLException;
