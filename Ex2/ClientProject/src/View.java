@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -124,11 +125,37 @@ public class View implements ActionListener{
 			for (int i = 0; i < products.length; i++) {
 				if(e.getSource().equals(addToCart[i])){
 					System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
+					int a;
+					try {
+						a = Integer.parseInt(amount[i].getText());
+						if (a >available[i]) notifyNotAvailableAmount(); 
+						//TODO: check with server if the available amount is still accurate
+													
+						else 
+							System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
+						//TODO: Notify server
+					} catch (Exception e2) {
+						notifyInvalidAmount();
+					}
+					
 				}
 			}
 		}
 	}
 	
+	public void notifyInvalidAmount(){
+		JOptionPane.showMessageDialog(frame,
+			    "The product amount needs to be a number.");
+	}
 	
+	public void notifyNotAvailableAmount(){
+		JOptionPane.showMessageDialog(frame,
+			    "The product amount needs to be in the available range.");
+	}
+	
+	public void notifyAlreadySold(){
+		JOptionPane.showMessageDialog(frame,
+			    "The product is no longer available.");
+	}
 
 }
