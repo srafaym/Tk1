@@ -1,7 +1,8 @@
 package soapserverpackage;
 
+import javax.xml.bind.annotation.XmlRootElement;
 
-
+@XmlRootElement
 public class Product {
 	public String itemname;
 	public double price;
