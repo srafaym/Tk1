@@ -20,16 +20,13 @@ public class RestImpl implements ProductInterface {
 	@Override
 	@GET
 	@Path("/list")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_XML)
 	public Products alldetails() {
 		ProductImplementation productImplementation = new ProductImplementation();
 		return productImplementation.alldetails();
 	}
 
 	@Override
-	@POST
-	@Path("/add/{a}/{b}")
-	@Produces(MediaType.APPLICATION_XML)
 	public String addtocart(@PathParam("a") int client_id, @DatabindingMode("b") Product b) {
 		// System.out.println("Calling addtocart from Rest Client "+ client_id);
 		// ProductImplementation pImpl = new ProductImplementation();
@@ -54,6 +51,9 @@ public class RestImpl implements ProductInterface {
 		System.out.println("Client ID "+client_id);
 		System.out.println("Product [itemname=" + itemname + ", price=" + price + ", available_in_store=" + available_in_store
 		+ ", item_id=" + item_id + ", item_unique_id=" + item_unique_id + "]");
+		
+		//whatever data client passed we will make it part of product by make new Product.
+		
 		Product product = new Product(item_unique_id, itemname, price, available_in_store);
 		ProductImplementation pImpl = new ProductImplementation();
 		System.out.println(pImpl.addtocart(client_id, product));

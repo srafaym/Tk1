@@ -22,9 +22,8 @@ public class TestClient {
 
 		WebResource service = client.resource(REST_URI);
 
-//		WebResource orderService = service.path(ADD_PATH);
-
-//		System.out.println("orderService Response: " + getResponse(orderService));
+		WebResource orderService = service.path(ADD_PATH);
+		System.out.println("orderService Response: " + getOutputAsAppXml(orderService));
 //		System.out.println("Sub Output as XML: " + getOutputAsAppXml(orderService));
 
 //		System.out.println("orderService Response: " + getResponseJson(orderService));

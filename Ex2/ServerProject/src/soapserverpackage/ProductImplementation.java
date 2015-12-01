@@ -49,7 +49,7 @@ public class ProductImplementation implements ProductInterface {
 	@Override
 	public String addtocart(int client_id,Product client_request_item) {
 		String message = "no message for you fuck face";
-		System.out.println();
+		System.out.println(message);
 		boolean clientfound = false;
 		//create first client
 		if (shopingCartList.size() == 0) {
