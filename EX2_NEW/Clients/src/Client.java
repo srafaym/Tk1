@@ -13,8 +13,10 @@ public interface Client {
 	
 	public void addToCart(String product, int amount);
 		
-	public void notifyServerWithBuy();
+	public void notifyServerWithBuy(int client_id);
 	
-	public boolean checkAvailable(String product);
+	public boolean checkAvailable(String product,int quanity);
+
+	boolean checkAvailable(String product);
 	
 }

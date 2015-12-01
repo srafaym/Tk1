@@ -121,7 +121,7 @@ public class View implements ActionListener{
 		// TODO Auto-generated method stub
 		
 		if(e.getSource().equals(buyButton)){
-			client.notifyServerWithBuy();;
+			client.notifyServerWithBuy(1);;
 		}
 		else{
 			for (int i = 0; i < products.length; i++) {
@@ -130,11 +130,11 @@ public class View implements ActionListener{
 					int a;
 					try {
 						a = Integer.parseInt(amount[i].getText());
-						if (!client.checkAvailable(products[i])) notifyNotAvailableAmount();
-						else {
-							System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
-							client.addToCart(products[i], a);
-						}
+//						if (!client.checkAvailable(products[i])) notifyNotAvailableAmount();
+//						else {
+//							System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
+//							client.addToCart(products[i], a);
+//						}
 					} catch (Exception e2) {
 						// TODO: handle exception
 						notifyInvalidAmount();

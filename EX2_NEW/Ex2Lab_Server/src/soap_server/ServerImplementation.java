@@ -9,32 +9,32 @@ import javax.jws.WebService;
 @WebService(endpointInterface = "soap_server.ServerInterface")
 public class ServerImplementation implements ServerInterface {
 
-	public static ArrayList<Product> MainProductsList;
+	public static Products MainProductsList;
 	public static ArrayList<ShoppingCart> shopingCartList;
 	
-	public void ServerImplementation() {
+	public ServerImplementation() {
 	
 	shopingCartList = new ArrayList<ShoppingCart>();
 		// TODO Auto-generated method stub
 	String[] items  = {"Mango", "Banana", "Cucumber", "Pear", "Peach", "Suthern Melon", "Coconut"};
-	MainProductsList = new ArrayList<Product>();
+	MainProductsList = new Products();
 	Random rand = new Random();
 	for (int i = 0; i < items.length; i++) {
 		
 		int randomNum = rand.nextInt(((items.length-1) - 0) + 1) + 0;
 		
-		MainProductsList.add( new Product(1,items[i],(double)rand.nextInt((20 - 0) + 1) + 0,  rand.nextInt((5 - 1) + 1) + 1) );
+		MainProductsList.productList.add( new Product(1,items[i],(double)rand.nextInt((20 - 0) + 1) + 0,  rand.nextInt((5 - 1) + 1) + 1) );
 	}
 
 	}
-	public ArrayList<Product> alldetails() {
+	public Products alldetails() {
 		// TODO Auto-generated method stub
-		return MainProductsList;
+		return  MainProductsList;
 	}
 
 	public Boolean CheckItemInstore(Product client_request_cart)
 	{
-		for (Product pMain : MainProductsList) {
+		for (Product pMain : MainProductsList.productList) {
 			if (pMain.itemname == client_request_cart.itemname) {
 				if (pMain.available_in_store < client_request_cart.available_in_store)
 					{return false;}

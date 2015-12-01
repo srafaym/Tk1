@@ -2,11 +2,11 @@ package soap_server;
 
 
 public class Product {
-	public String itemname;
-	public double price;
-	public int available_in_store;
-	public int item_id;
-	public int item_unique_id;
+	public String itemname = "";
+	public double price = 0.0;
+	public int available_in_store = 0;
+	public int item_id = 0;
+	public int item_unique_id = 0;
 	
 	public Product() {
 

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public interface ServerInterface {
 
-	@WebMethod ArrayList<Product> alldetails();	
+	@WebMethod Products alldetails();	
 
 	@WebMethod String addtocart(int client_id,Product pCart);
 	

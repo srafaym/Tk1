@@ -32,7 +32,7 @@ public class RestClient implements Client{
 	}
 
 	@Override
-	public void notifyServerWithBuy() {
+	public void notifyServerWithBuy(int client_id) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -51,6 +51,12 @@ public class RestClient implements Client{
 
 	@Override
 	public boolean checkAvailable(String product) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean checkAvailable(String product, int quanity) {
 		// TODO Auto-generated method stub
 		return false;
 	}

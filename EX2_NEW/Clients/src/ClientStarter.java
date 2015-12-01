@@ -11,7 +11,9 @@ public class ClientStarter{
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		
+		SoapClient soap = new SoapClient(0);
 		
 		
 	}
