@@ -1,49 +1,63 @@
 package restserverpackge;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.oracle.webservices.internal.api.databinding.DatabindingMode;
+
 import soapserverpackage.Product;
 import soapserverpackage.ProductImplementation;
+import soapserverpackage.ProductInterface;
 import soapserverpackage.Products;
 
 @Path("/rest")
-public class RestImpl implements RestInterface {
+public class RestImpl implements ProductInterface {
 
 	@Override
 	@GET
 	@Path("/list")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Products getProducts() {
-//		List<Product> list = new ArrayList<>();
-//		Product order = new Product(0, "laptop", 500, 20);
-//		list.add(order);
-//
-//		Product order2 = new Product(0, "headset", 10, 15);
-//		list.add(order2);
-//
-//		Product order3 = new Product(0, "TV", 300, 50);
-//		list.add(order3);
-
+	@Produces(MediaType.APPLICATION_XML)
+	public Products alldetails() {
 		ProductImplementation productImplementation = new ProductImplementation();
-
-//		System.out.println("getProducts");
 		return productImplementation.alldetails();
-
 	}
 
 	@Override
-	public void addCart(Product orders) {
-		// TODO Auto-generated method stub
-
+	public String addtocart(@PathParam("a") int client_id, @DatabindingMode("b") Product b) {
+		// System.out.println("Calling addtocart from Rest Client "+ client_id);
+		// ProductImplementation pImpl = new ProductImplementation();
+		// System.out.println(pImpl.addtocart(client_id, b));
+		return null;
 	}
 
 	@Override
-	public void delCart(Product orders) {
+	public String Buy(int client_id) {
 		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	@GET
+	@Path("/add/{a}/{b}/{c}/{d}/{e}/{f}")
+	@Produces(MediaType.APPLICATION_XML)
+	public String getClientData(@PathParam("a") int client_id, @PathParam("b") String itemname,
+			@PathParam("c") double price, @PathParam("d") int available_in_store, @PathParam("e") int item_id,
+			@PathParam("f") int item_unique_id) {
+		
+		System.out.println("Client ID "+client_id);
+		System.out.println("Product [itemname=" + itemname + ", price=" + price + ", available_in_store=" + available_in_store
+		+ ", item_id=" + item_id + ", item_unique_id=" + item_unique_id + "]");
+		
+		//whatever data client passed we will make it part of product by make new Product.
+		
+		Product product = new Product(item_unique_id, itemname, price, available_in_store);
+		ProductImplementation pImpl = new ProductImplementation();
+		System.out.println(pImpl.addtocart(client_id, product));
+		return pImpl.addtocart(client_id, product);
 	}
 
 }

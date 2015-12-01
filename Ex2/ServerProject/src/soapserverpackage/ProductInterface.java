@@ -15,4 +15,6 @@ public interface ProductInterface {
 	@WebMethod String addtocart(int client_id,Product pCart);
 	
 	@WebMethod String Buy(int client_id);
+	
+	@WebMethod String getClientData(int client_id,String itemname,double price,int available_in_store,int item_id,int item_unique_id);
 }

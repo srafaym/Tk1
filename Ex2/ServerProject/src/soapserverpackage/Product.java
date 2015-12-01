@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Product {
+
+	
 	public String itemname;
 	public double price;
 	public int available_in_store;
