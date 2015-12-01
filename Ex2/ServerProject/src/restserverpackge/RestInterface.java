@@ -16,7 +16,7 @@ public interface RestInterface {
 	
 	//Order order = new Order();  on client side
 	
-	public void delCart(Product orders);
+//	public void delCart(Product orders);
 	
 	
 	//integrate web server with the restful client
