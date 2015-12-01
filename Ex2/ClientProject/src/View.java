@@ -14,6 +14,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
+import soapserverpackage.Product;
+import soapserverpackage.ProductInterface;
+
 
 
 public class View implements ActionListener{
@@ -26,14 +29,15 @@ public class View implements ActionListener{
 	public JButton buyButton;
 	public JButton [] addToCart;
 	public JTextField[] amount;
-	
-	public View(String serviceName, String [] products, double[] prices, int[] available) {
+	public int client_id = 1;
+	public ProductInterface product_object;
+	public View(String serviceName, String [] products, double[] prices, int[] available,ProductInterface product_object ) {
 		// TODO Auto-generated constructor stub
 		this.serviceName = serviceName;
 		this.products = products;
 		this.prices = prices;
 		this.available = available;
-		
+		this.product_object = product_object;
 		this.buyButton = new JButton ("Buy");
 		this.addToCart = new JButton [products.length];
 		
@@ -111,7 +115,7 @@ public class View implements ActionListener{
 		frame.setVisible(true);
 		
 		
-		buyButton.addActionListener(this);					// Action listener add
+		//buyButton.addActionListener(this);					// Action listener add
 	}
 
 	@Override
@@ -138,6 +142,9 @@ public class View implements ActionListener{
 						notifyInvalidAmount();
 					}
 					
+					Product pro = new Product(1, "Mango", 1.2, 2);
+					String re_msg = product_object.addtocart(client_id, pro);
+					System.out.println(re_msg+"  ,add to cart " + i+ " clicked with value "+ amount[i].getText());
 				}
 			}
 		}

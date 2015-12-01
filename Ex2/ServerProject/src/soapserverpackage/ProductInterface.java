@@ -12,5 +12,7 @@ public interface ProductInterface {
 
 	@WebMethod Products alldetails();	
 
-	@WebMethod String addtocart(Integer cust_id,Products pr);
+	@WebMethod String addtocart(int client_id,Product pCart);
+	
+	@WebMethod String Buy(int client_id);
 }

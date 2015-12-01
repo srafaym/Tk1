@@ -1,26 +1,31 @@
 package soapserverpackage;
 
+
+
 public class Product {
+	public String itemname;
+	public double price;
+	public int available_in_store;
+	public int item_id;
+	public int item_unique_id;
+	
 	public Product() {
 
 	}
-
-	public Product(String name, double price, int quantity) {
+	
+	public Product(int item_unique_id,String itemname, double price, int available_in_store) {
 		super();
-		this.name = name;
+		this.item_unique_id = item_unique_id;
+		this.itemname = itemname;
 		this.price = price;
-		this.quantity = quantity;
+		this.available_in_store = available_in_store;
 	}
-
-	public String name;
-	public double price;
-	public int quantity;
 
 	@Override
 	public String toString() {
 
-		return new StringBuffer(" name : ").append(this.name)
-				.append(" price : ").append(this.price).append(" quantity : ")
-				.append(this.quantity).toString();
+		return new StringBuffer(" Item : ").append(this.itemname)
+				.append("  ,Price : ").append(this.price).append(" ,Amount : ")
+				.append(this.available_in_store).append("   Danke").toString();
 	}
 }

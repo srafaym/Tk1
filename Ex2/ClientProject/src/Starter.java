@@ -37,25 +37,36 @@ public class Starter{
 
 		Service service = Service.create(url, qname);
 
-		ProductInterface product_object = service.getPort(ProductInterface.class);
+		final ProductInterface product_object = service.getPort(ProductInterface.class);
 		Products products;
 		products = product_object.alldetails();
-
-		String[] prod = new String[3];
-		double[] prices = new double[3];
-		int[] available =  new int[3];
+		
+		String[] prod = new String[ products.productList.size()];
+		double[] prices = new double[products.productList.size()];
+		int[] available =  new int[products.productList.size()];
 		
 		int i = 0;
 		for(Product p : products.productList)   
 		{	
-			prod[i] = p.name;	
+			prod[i] = p.itemname;	
 			prices[i] = p.price;
-			available[i] = p.quantity;
+			available[i] = p.available_in_store;
 			i++;
 		}
-		View view = new View("Test", prod, prices, available);
+		View view = new View("Test", prod, prices, available,product_object);
 		view.createAndShowGUI();
 		
+		
+		view.buyButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String return_msg = product_object.Buy(1);
+				System.out.println(return_msg);
+				
+			}
+		});
 	}
 
 	
