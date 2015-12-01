@@ -9,7 +9,7 @@ import com.sun.net.httpserver.HttpServer;
 public class Shopreststartup {
 
 
-	 public static final String URI = "http://localhost:8080/";
+	 public static final String URI = "http://localhost:8080/server/";
 	 
 	    public static void main(String[] args) {
 	        try {
