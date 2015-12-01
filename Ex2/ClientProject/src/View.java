@@ -128,7 +128,7 @@ public class View implements ActionListener{
 		else{
 			for (int i = 0; i < products.length; i++) {
 				if(e.getSource().equals(addToCart[i])){
-					System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
+//					System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
 					int a;
 					try {
 						a = Integer.parseInt(amount[i].getText());
@@ -136,15 +136,16 @@ public class View implements ActionListener{
 						//TODO: check with server if the available amount is still accurate
 													
 						else 
-							System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
-						//TODO: Notify server
+						{
+							Product pro = new Product(1, products[i], prices[i], a);
+							String re_msg = product_object.addtocart(client_id, pro);
+							System.out.println(re_msg+"  ,add to cart " + i+ " clicked with value "+ amount[i].getText());
+						}
 					} catch (Exception e2) {
 						notifyInvalidAmount();
 					}
 					
-					Product pro = new Product(1, "Mango", 1.2, 2);
-					String re_msg = product_object.addtocart(client_id, pro);
-					System.out.println(re_msg+"  ,add to cart " + i+ " clicked with value "+ amount[i].getText());
+					
 				}
 			}
 		}
