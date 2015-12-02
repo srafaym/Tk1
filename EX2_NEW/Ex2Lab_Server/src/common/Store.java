@@ -9,13 +9,13 @@ public class Store {
 	private static HashMap<String, Product> productsMap;
 	private static HashMap<Integer, ShoppingCart> shoppingCarts = new HashMap<>();;
 
-	public static HashMap<String, Product> getProductsMap(){
+	public static HashMap<String, Product> getProductsMap() {
 		if (productsMap == null) {
 			fillProducts();
 		}
 		return productsMap;
 	}
-	
+
 	public static LinkedList<Product> getProductsList() {
 		return new LinkedList<Product>(getProductsMap().values());
 	}
@@ -87,7 +87,8 @@ public class Store {
 		Random rand = new Random();
 		for (int i = 0; i < items.length; i++) {
 			double randomNum = rand.nextDouble() * 100;
-			double randomPrice = rand.nextDouble() * 3;
+			double randomDouble = rand.nextDouble() * 3;
+			double randomPrice = Math.round(randomDouble * 100) / 100.0;
 			productsMap.put(items[i], new Product(items[i], randomPrice,
 					(int) randomNum));
 		}
