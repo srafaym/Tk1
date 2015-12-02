@@ -1,53 +1,53 @@
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
+import java.util.LinkedList;
 
+import common.Product;
 
+public class View implements ActionListener {
 
-public class View implements ActionListener{
+	JFrame frame;
+	String serviceName;
+	Collection<Product> products;
+	JButton buyButton;
+	HashMap<String, JButton> addToCart;
+	HashMap<String, JTextField> amount;
+	Client client;
+	int productCount;
+	int clientId;
+	JPanel panel;
 
-	public JFrame frame;
-	private String serviceName;
-	private String [] products; 
-	private double [] prices;
-	private int[] available;
-	public JButton buyButton;
-	public JButton [] addToCart;
-	public JTextField[] amount;
-	public Client client;
-	
-	public View(String serviceName, String [] products, double[] prices, int[] available, Client client) {
+	public View(String serviceName, LinkedList<Product> products, Client client) {
 		// TODO Auto-generated constructor stub
 		this.serviceName = serviceName;
 		this.products = products;
-		this.prices = prices;
-		this.available = available;
+		System.out.println(products.get(0).name + " "
+				+ products.get(0).itemCount);
+		this.productCount = products.size();
 		this.client = client;
-		
-		this.buyButton = new JButton ("Buy");
-		this.addToCart = new JButton [products.length];
-		
-		for (int i = 0; i < products.length; i++) {
-		 this.addToCart[i] = new JButton ("Add to cart");
-		 this.addToCart[i].addActionListener(this);				// Action listener add
+		this.clientId = client.getId();
+
+		this.buyButton = new JButton("Buy");
+		this.addToCart = new HashMap<>();
+		this.amount = new HashMap<>();
+
+		for (Product product : products) {
+			JButton button = new JButton("Add to cart");
+			button.addActionListener(this); // Action listener add
+			this.addToCart.put(product.name, button);
+			this.amount.put(product.name, new JTextField("0"));
 		}
-		
-		this.amount = new JTextField [products.length];
-		for (int i = 0; i < products.length; i++) {
-		 this.amount[i] = new JTextField("0");
-		}
+
 	}
 
 	public void createAndShowGUI() {
@@ -56,108 +56,116 @@ public class View implements ActionListener{
 
 		frame.setLocationByPlatform(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		Container contentPane = frame.getContentPane();
-//		contentPane.setLayout(new BorderLayout());
+		// Container contentPane = frame.getContentPane();
+		// contentPane.setLayout(new BorderLayout());
 
-		JPanel panel = new JPanel(new SpringLayout());
-		String[] columnNames = {"Amount", "Title", "Price", "Available Amount"};
-		
-		
-		
-        int rows = products.length + 1;
-        int cols = 5;
-       
-        //Add column names
-        for (int i = 0; i < 4; i++) {    
-          JLabel l = new JLabel(columnNames[i], JLabel.TRAILING);
-           panel.add(l);
-        }
-        panel.add(buyButton);
-        
-        for (int i = 0; i < products.length; i++) {
-            // amount
-           
-            panel.add(amount[i]);
-            
-            //product name
-            JLabel name = new JLabel(products[i], JLabel.TRAILING);
-            panel.add(name);
-            
-            //price
-            JLabel p = new JLabel(Double.toString(prices[i]), JLabel.TRAILING);
-            panel.add(p);
-            
-          //available
-            JLabel a = new JLabel(Integer.toString(available[i]), JLabel.TRAILING);
-            panel.add(a);
-            
-           
-            panel.add(addToCart[i]);
-        }
-        
+		this.refreshProductPanel();
 
-        //Lay out the panel.
-        SpringUtilities.makeCompactGrid(panel, //parent
-                                        rows, cols,
-                                        3, 3,  //initX, initY
-                                        3, 3); //xPad, yPad
- 
-         
-        //Set up the content pane.
-        panel.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(panel);
- 
-        //Display the window.
-        frame.pack();
+		buyButton.addActionListener(this); // Action listener add
+	}
 
+	private void refreshProductPanel() {
+		panel = new JPanel(new SpringLayout());
+		String[] columnNames = { "Amount", "Title", "Price", "Available Amount" };
+
+		int rows = productCount + 1;
+		int cols = 5;
+
+		// Add column names
+		for (int i = 0; i < 4; i++) {
+			JLabel l = new JLabel(columnNames[i], JLabel.TRAILING);
+			panel.add(l);
+		}
+		panel.add(buyButton);
+
+		for (Product p : products) {
+			// amount
+
+			amount.get(p.name).setText("");
+			panel.add(amount.get(p.name));
+
+			// product name
+			JLabel name = new JLabel(p.name, JLabel.TRAILING);
+			panel.add(name);
+
+			// price
+			JLabel price = new JLabel(Double.toString(p.price), JLabel.TRAILING);
+			panel.add(price);
+
+			// available
+			JLabel a = new JLabel(Integer.toString(p.itemCount),
+					JLabel.TRAILING);
+			panel.add(a);
+
+			panel.add(addToCart.get(p.name));
+		}
+
+		// Lay out the panel.
+		SpringUtilities.makeCompactGrid(panel, // parent
+				rows, cols, 3, 3, // initX, initY
+				3, 3); // xPad, yPad
+
+		// Set up the content pane.
+		panel.setOpaque(true); // content panes must be opaque
+		frame.setContentPane(panel);
+
+		frame.setResizable(false);
+
+		// Display the window.
+		frame.pack();
 		frame.setVisible(true);
-		
-		
-		buyButton.addActionListener(this);					// Action listener add
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
-		if(e.getSource().equals(buyButton)){
-			client.notifyServerWithBuy(1);;
-		}
-		else{
-			for (int i = 0; i < products.length; i++) {
-				if(e.getSource().equals(addToCart[i])){
-					System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
+
+		if (e.getSource().equals(buyButton)) {
+			client.notifyServerWithBuy(clientId);
+			this.products = client.getProductsFromServer();
+			this.refreshProductPanel();
+		} else {
+			for (Product product : this.products) {
+				if (e.getSource().equals(addToCart.get(product.name))) {
+					String productName = product.name;
+					String purchaseAmount = amount.get(product.name).getText();
+					System.out.println("add to cart " + productName
+							+ " clicked with value " + purchaseAmount);
 					int a;
 					try {
-						a = Integer.parseInt(amount[i].getText());
-//						if (!client.checkAvailable(products[i])) notifyNotAvailableAmount();
-//						else {
-//							System.out.println("add to cart " + i+ " clicked with value "+ amount[i].getText());
-//							client.addToCart(products[i], a);
-//						}
+						a = Integer.parseInt(purchaseAmount);
+
+						if (!client.checkItemInStore(new Product(productName,
+								0, a))) {
+							notifyNotAvailableAmount();
+							this.products = client.getProductsFromServer();
+							this.refreshProductPanel();
+						} else {
+							client.addToCart(productName, a);
+						}
 					} catch (Exception e2) {
 						// TODO: handle exception
 						notifyInvalidAmount();
 					}
-					
+
 				}
 			}
 		}
 	}
-	
-	public void notifyInvalidAmount(){
+
+	public void notifyInvalidAmount() {
 		JOptionPane.showMessageDialog(frame,
-			    "The product amount needs to be a number.");
+				"The product amount needs to be a number.");
 	}
-	
-	public void notifyNotAvailableAmount(){
+
+	public void notifyNotAvailableAmount() {
 		JOptionPane.showMessageDialog(frame,
-			    "The product amount needs to be in the available range.");
+				"The product amount needs to be in the available range.");
 	}
-	
-	public void notifyAlreadySold(){
+
+	public void notifyAlreadySold() {
 		JOptionPane.showMessageDialog(frame,
-			    "The product is no longer available.");
+				"The product is no longer available.");
 	}
 
 }

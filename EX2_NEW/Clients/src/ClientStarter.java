@@ -1,23 +1,12 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-//TODO: add new implementation of product
-
-
-public class ClientStarter{
+public class ClientStarter {
 
 	public ClientStarter() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
-		
-		
-		SoapClient soap = new SoapClient(0);
-		
-		
+		 SoapClient soap = new SoapClient(0);
+		 SoapClient soap1 = new SoapClient(1);
+//		RestClient rest = new RestClient(1);
 	}
-
-	
 
 }

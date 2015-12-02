@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lib/lib.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Ex2Lab_Server"/>
+	<classpathentry kind="lib" path="D:/Documents/TK1 REPO/Tk1/EX2_NEW/libs/javax.jws-1.0.jar"/>
+	<classpathentry kind="lib" path="D:/Documents/TK1 REPO/Tk1/EX2_NEW/libs/jersey-bundle-1.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,22 +1,22 @@
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedList;
+
+import common.Product;
+import common.Products;
+import common.ShoppingCart;
 
 public interface Client {
-	
 
-	public HashMap<String, Integer> shoppingCart = new HashMap<String, Integer>();
-			
-	public String[] getProductsFromServer();
+	LinkedList<Product> getProductsFromServer();
 	
-	public double[] getPricesFromServer();
-	
-	public int[] getAvailableAmountFromServer();
-	
-	public void addToCart(String product, int amount);
+	void addToCart(String product, int amount);
 		
-	public void notifyServerWithBuy(int client_id);
+	void notifyServerWithBuy(int client_id);
 	
-	public boolean checkAvailable(String product,int quanity);
+	boolean checkItemInStore(Product product);
 
-	boolean checkAvailable(String product);
+	int getId();
+
+	boolean checkAllItemsInStore(ShoppingCart cart);
 	
 }
