@@ -80,15 +80,6 @@ public class SoapClient implements Client {
 	}
 
 	@Override
-	public boolean checkAllItemsInStore(ShoppingCart cart) {
-		ServerInterface serverInterface = (ServerInterface) service
-				.getPort(ServerInterface.class);
-		boolean result = serverInterface.checkAllItemsInStore(cart);
-		System.out.println("Check Available: " + result);
-		return result;
-	}
-
-	@Override
 	public int getId() {
 		return id;
 	}

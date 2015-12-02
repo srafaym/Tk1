@@ -1,44 +1,45 @@
 package common;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 public class Store {
 
-	private static HashMap<String, Product> products;
+	private static HashMap<String, Product> productsMap;
 	private static HashMap<Integer, ShoppingCart> shoppingCarts = new HashMap<>();;
 
-	public static LinkedList<Product> getProductsRaw() {
-		if (products == null) {
+	public static HashMap<String, Product> getProductsMap(){
+		if (productsMap == null) {
 			fillProducts();
 		}
-		return new LinkedList<Product>(products.values());
+		return productsMap;
+	}
+	
+	public static LinkedList<Product> getProductsList() {
+		return new LinkedList<Product>(getProductsMap().values());
 	}
 
 	public static Products getProducts() {
-		return new Products(getProductsRaw());
+		System.out.println("getting products in ServerImplementation");
+		return new Products(getProductsList());
 	}
 
 	public static boolean checkItemInStore(Product product) {
-		Product available = products.get(product.name);
+		System.out.println("checkItemInStore in ServerImplementation");
+		Product available = getProductsMap().get(product.name);
 		System.out.println("Checking item in store: " + product.name
 				+ " wanted: " + product.itemCount + " available: "
 				+ available.itemCount);
 		return available.itemCount >= product.itemCount;
 	}
 
-	public static boolean checkAllItemsInStore(ShoppingCart cart) {
-		for (Product product : cart.getProducts())
-			if (!checkItemInStore(product)) {
-				return false;
-			}
-		return true;
+	public static boolean checkAllItemsInStore(int clientId) {
+		return checkAllItemsInStore(getCart(clientId));
 	}
 
 	public static boolean addToCart(int clientId, Product product) {
+		System.out.println("adding to cart in ServerImplementation");
 		ShoppingCart cart = getCart(clientId);
 		if (checkItemInStore(product)) {
 			cart.add(product);
@@ -61,14 +62,14 @@ public class Store {
 		System.out.println("BUY IN STORE");
 		ShoppingCart cart = getCart(clientId);
 
-		if (checkAllItemsInStore(cart)) {
+		if (checkAllItemsInStore(clientId)) {
 			for (Product product : cart.getProducts()) {
-				Product available = products.get(product.name);
+				Product available = productsMap.get(product.name);
 				System.out.println("Amount before: " + available.itemCount);
 				available.setItemCount(available.itemCount - product.itemCount);
 				System.out.println("Amount after: " + available.itemCount);
 				System.out.println("Amount after: "
-						+ products.get(product.name).itemCount);
+						+ productsMap.get(product.name).itemCount);
 			}
 			shoppingCarts.put(clientId, new ShoppingCart());
 			return true;
@@ -80,16 +81,24 @@ public class Store {
 	}
 
 	public static void fillProducts() {
-		products = new HashMap<>();
+		productsMap = new HashMap<>();
 		String[] items = new String[] { "Mango", "Banana", "Cucumber", "Pear",
 				"Peach", "Suthern Melon", "Coconut" };
 		Random rand = new Random();
 		for (int i = 0; i < items.length; i++) {
 			double randomNum = rand.nextDouble() * 100;
 			double randomPrice = rand.nextDouble() * 3;
-			products.put(items[i], new Product(items[i], randomPrice,
+			productsMap.put(items[i], new Product(items[i], randomPrice,
 					(int) randomNum));
 		}
-		System.out.println(products.size());
+		System.out.println(productsMap.size());
+	}
+
+	public static boolean checkAllItemsInStore(ShoppingCart cart) {
+		for (Product product : cart.getProducts())
+			if (!checkItemInStore(product)) {
+				return false;
+			}
+		return true;
 	}
 }

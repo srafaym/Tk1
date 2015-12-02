@@ -28,7 +28,6 @@ public class View implements ActionListener {
 	JPanel panel;
 
 	public View(String serviceName, LinkedList<Product> products, Client client) {
-		// TODO Auto-generated constructor stub
 		this.serviceName = serviceName;
 		this.products = products;
 		System.out.println(products.get(0).name + " "
@@ -43,7 +42,7 @@ public class View implements ActionListener {
 
 		for (Product product : products) {
 			JButton button = new JButton("Add to cart");
-			button.addActionListener(this); // Action listener add
+			button.addActionListener(this);
 			this.addToCart.put(product.name, button);
 			this.amount.put(product.name, new JTextField("0"));
 		}
@@ -118,7 +117,6 @@ public class View implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 
 		if (e.getSource().equals(buyButton)) {
 			client.notifyServerWithBuy(clientId);
@@ -144,7 +142,6 @@ public class View implements ActionListener {
 							client.addToCart(productName, a);
 						}
 					} catch (Exception e2) {
-						// TODO: handle exception
 						notifyInvalidAmount();
 					}
 

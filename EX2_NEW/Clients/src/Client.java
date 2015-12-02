@@ -17,6 +17,5 @@ public interface Client {
 
 	int getId();
 
-	boolean checkAllItemsInStore(ShoppingCart cart);
 	
 }

@@ -1,17 +1,19 @@
 package rest;
 
+import javax.ws.rs.core.Response;
+
 import common.Product;
 import common.Products;
 import common.ShoppingCart;
 
 public interface RestServiceInterface {
-	boolean addToCart(int clientId, Product product);
+	Response addToCart(int clientId, Product product);
 	
-	boolean buy(int clientId);
+	Response buy(int clientId);
 
 	Products allProducts();
 	
-	boolean checkItemInStore(Product product);
+	Response checkItemInStore(Product product);
 
-	boolean checkAllItemsInStore(ShoppingCart cart);
+	Response checkAllItemsInStore(int clientId);
 }
