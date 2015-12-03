@@ -32,10 +32,24 @@
         <delete dir="${client-build.dir}"/>
    </target>
 
+	<target name="wsimportTarget">
+		<exec executable="${wsHome}/wsimport">
+			<arg line="http://localhost:8090/soap?wsdl"/>
+		</exec>
+	</target>
 
-  
+  <target name="jar" depends="wsimportTarget">
+    <jar destfile="lib.jar"
+         basedir="."
+         includes="**/*.class"
+         />
+  </target>
 
-    <target name="compileClient" >
+	<target name="movejar" depends="jar">
+	<move file="lib.jar" todir="libs"/>
+	</target>
+
+    <target name="compileClient" depends="movejar">
         <mkdir dir="${client-classes.dir}"/>
         <javac srcdir="${clients.dir}" destdir="${client-classes.dir}">
 		   <classpath refid="classpath"/>
@@ -56,7 +70,7 @@
     </target>
 
     <target name="client-run" depends="client-jar">
-        <java jar="${client-jar.dir}/${clientName}.jar" fork="true"/>
+        <java jar="${client-jar.dir}/clients.jar" fork="true"/>
     </target>
 
 
