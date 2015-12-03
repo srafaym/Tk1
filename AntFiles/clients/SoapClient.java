@@ -8,10 +8,12 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import common.Product;
-import common.Products;
-import common.ShoppingCart;
+
 import soap.ServerInterface;
+
+import soap.Product;
+import soap.Products;
+import soap.ShoppingCart;
 
 public class SoapClient implements Client {
 

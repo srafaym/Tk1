@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import common.Product;
-import common.Products;
-import common.ShoppingCart;
+import soap.Product;
+import soap.Products;
+import soap.ShoppingCart;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBContext;

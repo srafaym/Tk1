@@ -1,0 +1,67 @@
+<project name="Services" basedir="." default="main">
+
+    <property name="wsHome"     value="/usr/lib/jvm/java-7-openjdk-i386/bin"/>
+   
+    <property name="clientsName"     value="clients"/>
+	
+   
+    <property name="clients.dir"     value="."/>
+
+  
+	<property name="client-build.dir"   value="clientbuild"/>
+	
+   
+	<property name="client-classes.dir" value="${client-build.dir}/classes"/>
+	
+   
+    <property name="client-jar.dir"     value="${client-build.dir}/jar"/>
+	
+    <property name="main-class-client"  value="ClientStarter"/>
+	
+    <property name="build-libs" location="libs" />
+
+    <path id="classpath">
+        <pathelement location="bin"/>
+        <pathelement location="libs/javax.jws-1.0.jar"/>
+        <pathelement location="libs/jersey-bundle-1.19.jar"/>
+	<pathelement location="libs/lib.jar"/>
+    </path>
+
+    <target name="clean">
+		
+        <delete dir="${client-build.dir}"/>
+   </target>
+
+
+  
+
+    <target name="compileClient" >
+        <mkdir dir="${client-classes.dir}"/>
+        <javac srcdir="${clients.dir}" destdir="${client-classes.dir}">
+		   <classpath refid="classpath"/>
+		</javac>
+    </target>
+	
+    <target name="client-jar" depends="compileClient">
+        <mkdir dir="${client-jar.dir}"/>
+        <jar destfile="${client-jar.dir}/${clientsName}.jar" basedir="${client-classes.dir}">
+		 <zipgroupfileset dir="libs" includes="javax.jws-1.0.jar" />
+		 <zipgroupfileset dir="libs" includes="jersey-bundle-1.19.jar" />
+		 <zipgroupfileset dir="libs" includes="lib.jar" />
+
+            <manifest>
+                <attribute name="Main-Class" value="${main-class-client}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="client-run" depends="client-jar">
+        <java jar="${client-jar.dir}/${clientName}.jar" fork="true"/>
+    </target>
+
+
+    <target name="clean-build" depends="clean,client-jar"/>
+
+    <target name="main" depends="clean,client-run"/>
+
+</project>

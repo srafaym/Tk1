@@ -1,9 +1,9 @@
 import java.util.Collection;
 import java.util.LinkedList;
 
-import common.Product;
-import common.Products;
-import common.ShoppingCart;
+import soap.Product;
+import soap.Products;
+
 
 public interface Client {
 
