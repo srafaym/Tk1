@@ -1,6 +1,6 @@
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class SoapClient implements Client {
 
 		ServerInterface serverInterface = (ServerInterface) service
 				.getPort(ServerInterface.class);
-		LinkedList<Product> products = serverInterface.allProducts()
+		LinkedList<Product> products = (LinkedList<Product>) serverInterface.allProducts()
 				.getProducts();
 
 		View view = new View("SOAP", products, this);
@@ -52,14 +52,18 @@ public class SoapClient implements Client {
 		ServerInterface serverInterface = (ServerInterface) service
 				.getPort(ServerInterface.class);
 		System.out.println("Client get products");
-		return serverInterface.allProducts().getProducts();
+		return (LinkedList<Product>) serverInterface.allProducts().getProducts();
 	}
 
 	@Override
 	public void addToCart(String name, int quantity) {
+		
+		
 		ServerInterface serverInterface = (ServerInterface) service
 				.getPort(ServerInterface.class);
-		Product prod = new Product(name, 0, quantity);
+		Product prod = new Product();
+		prod.setName(name);
+		prod.setItemCount(quantity);
 		boolean result = serverInterface.addToCart(id, prod);
 		System.out.println("Add to cart: " + result);
 	}

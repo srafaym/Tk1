@@ -54,7 +54,7 @@ public class RestClient implements Client {
 		System.out.println("orderService Response: "
 				+ orderService.getURI().toString() + " : " + marshalled);
 
-		return unmarshal(marshalled).getProducts();
+		return (LinkedList<Product>)unmarshal(marshalled).getProducts();
 	}
 
 	public Products unmarshal(String source) {
@@ -100,7 +100,11 @@ public class RestClient implements Client {
 		WebResource checkService = client.resource(REST_URI + "/"
 				+ ADD_TO_CART_PATH + "?clientId=" + getId());
 		System.out.println(checkService.toString());
-		Product purchase = new Product(product, 0, amount);
+		
+		
+		Product purchase = new Product();
+		purchase.setName(product);
+		purchase.setItemCount(amount);
 		ClientResponse response = checkService.type(MediaType.APPLICATION_XML)
 				.post(ClientResponse.class, marshal(purchase)); // TODO: or
 																// without

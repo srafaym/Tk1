@@ -17,7 +17,9 @@ public class Store {
 	}
 
 	public static LinkedList<Product> getProductsList() {
-		return new LinkedList<Product>(getProductsMap().values());
+		
+		LinkedList<Product> again = new LinkedList<Product>(getProductsMap().values());
+		return again ;
 	}
 
 	public static Products getProducts() {
