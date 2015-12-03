@@ -1,0 +1,111 @@
+<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://soap/" name="ServerImplementationService">
+<types>
+<xsd:schema>
+<xsd:import namespace="http://soap/" schemaLocation="http://localhost:8090/soap?xsd=1"/>
+</xsd:schema>
+</types>
+<message name="buy">
+<part name="arg0" type="xsd:int"/>
+</message>
+<message name="buyResponse">
+<part name="return" type="xsd:boolean"/>
+</message>
+<message name="allProducts"/>
+<message name="allProductsResponse">
+<part name="return" type="tns:products"/>
+</message>
+<message name="addToCart">
+<part name="arg0" type="xsd:int"/>
+<part name="arg1" type="tns:product"/>
+</message>
+<message name="addToCartResponse">
+<part name="return" type="xsd:boolean"/>
+</message>
+<message name="checkItemInStore">
+<part name="arg0" type="tns:product"/>
+</message>
+<message name="checkItemInStoreResponse">
+<part name="return" type="xsd:boolean"/>
+</message>
+<message name="checkAllItemsInStore">
+<part name="arg0" type="tns:shoppingCart"/>
+</message>
+<message name="checkAllItemsInStoreResponse">
+<part name="return" type="xsd:boolean"/>
+</message>
+<portType name="ServerInterface">
+<operation name="buy">
+<input wsam:Action="http://soap/ServerInterface/buyRequest" message="tns:buy"/>
+<output wsam:Action="http://soap/ServerInterface/buyResponse" message="tns:buyResponse"/>
+</operation>
+<operation name="allProducts">
+<input wsam:Action="http://soap/ServerInterface/allProductsRequest" message="tns:allProducts"/>
+<output wsam:Action="http://soap/ServerInterface/allProductsResponse" message="tns:allProductsResponse"/>
+</operation>
+<operation name="addToCart" parameterOrder="arg0 arg1">
+<input wsam:Action="http://soap/ServerInterface/addToCartRequest" message="tns:addToCart"/>
+<output wsam:Action="http://soap/ServerInterface/addToCartResponse" message="tns:addToCartResponse"/>
+</operation>
+<operation name="checkItemInStore">
+<input wsam:Action="http://soap/ServerInterface/checkItemInStoreRequest" message="tns:checkItemInStore"/>
+<output wsam:Action="http://soap/ServerInterface/checkItemInStoreResponse" message="tns:checkItemInStoreResponse"/>
+</operation>
+<operation name="checkAllItemsInStore">
+<input wsam:Action="http://soap/ServerInterface/checkAllItemsInStoreRequest" message="tns:checkAllItemsInStore"/>
+<output wsam:Action="http://soap/ServerInterface/checkAllItemsInStoreResponse" message="tns:checkAllItemsInStoreResponse"/>
+</operation>
+</portType>
+<binding name="ServerImplementationPortBinding" type="tns:ServerInterface">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"/>
+<operation name="buy">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://soap/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://soap/"/>
+</output>
+</operation>
+<operation name="allProducts">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://soap/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://soap/"/>
+</output>
+</operation>
+<operation name="addToCart">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://soap/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://soap/"/>
+</output>
+</operation>
+<operation name="checkItemInStore">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://soap/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://soap/"/>
+</output>
+</operation>
+<operation name="checkAllItemsInStore">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal" namespace="http://soap/"/>
+</input>
+<output>
+<soap:body use="literal" namespace="http://soap/"/>
+</output>
+</operation>
+</binding>
+<service name="ServerImplementationService">
+<port name="ServerImplementationPort" binding="tns:ServerImplementationPortBinding">
+<soap:address location="http://localhost:8090/soap"/>
+</port>
+</service>
+</definitions>

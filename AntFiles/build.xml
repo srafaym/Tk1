@@ -1,0 +1,91 @@
+<project name="Services" basedir="." default="main">
+
+    <property name="wsHome"     value="/usr/lib/jvm/java-7-openjdk-i386/bin"/>
+    <property name="serverName"     value="server"/>
+    <property name="clientsName"     value="clients"/>
+	
+    <property name="server.dir"     value="server"/>
+    <property name="clients.dir"     value="clients"/>
+
+    <property name="server-build.dir"   value="serverbuild"/>
+	<property name="client-build.dir"   value="clientbuild"/>
+	
+    <property name="server-classes.dir" value="${server-build.dir}/classes"/>
+	<property name="client-classes.dir" value="${client-build.dir}/classes"/>
+	
+    <property name="server-jar.dir"     value="${server-build.dir}/jar"/>
+    <property name="client-jar.dir"     value="${client-build.dir}/jar"/>
+	
+    <property name="main-class-server"  value="Starter"/>
+    <property name="main-class-client"  value="ClientStarter"/>
+	
+    <property name="build-libs" location="libs/" />
+
+    <path id="classpath">
+        <pathelement location="bin"/>
+        <pathelement location="libs/javax.jws-1.0.jar"/>
+        <pathelement location="libs/jersey-bundle-1.19.jar"/>
+    </path>
+
+    <target name="clean">
+		<delete dir="${sever-build.dir}"/>
+        <delete dir="${client-build.dir}"/>
+   </target>
+
+    <target name="compileServer">
+        <mkdir dir="${server-classes.dir}"/>
+        <javac srcdir="${server.dir}" destdir="${server-classes.dir}">
+		  <classpath refid="classpath"/>
+		</javac>
+    </target>
+
+    <target name="server-jar" depends="compileServer">
+        <mkdir dir="${server-jar.dir}"/>
+        <jar destfile="${server-jar.dir}/${serverName}.jar" basedir="${server-classes.dir}">
+		 <zipgroupfileset dir="${build-libs}" includes="javax.jws-1.0.jar" />
+		 <zipgroupfileset dir="${build-libs}" includes="jersey-bundle-1.19.jar" />
+            <manifest>
+                <attribute name="Main-Class" value="${main-class-server}"/>
+            </manifest>
+        </jar>
+    </target>
+	
+	 <target name="server-run" depends="server-jar">
+		<java jar="${server-jar.dir}/${serverName}.jar" fork="true"/>
+    </target>
+	
+	<target name="wsimportTarget" depends="server-run">
+		<exec executable="${wsHome}/wsimport">
+			<arg line="-keep -d clients -s server -wsdllocation soap.wsdl"/>
+		</exec>
+	</target>
+
+	
+    <target name="compileClient" depends="wsimportTarget">
+        <mkdir dir="${client-classes.dir}"/>
+        <javac srcdir="${clients.dir}" destdir="${client-classes.dir}">
+		   <classpath refid="classpath"/>
+		</javac>
+    </target>
+	
+    <target name="client-jar" depends="compileClient">
+        <mkdir dir="${client-jar.dir}"/>
+        <jar destfile="${client-jar.dir}/${clientsName}.jar" basedir="${client-classes.dir}">
+		 <zipgroupfileset dir="libs" includes="javax.jws-1.0.jar" />
+		 <zipgroupfileset dir="libs" includes="jersey-bundle-1.19.jar" />
+            <manifest>
+                <attribute name="Main-Class" value="${main-class-client}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="client-run" depends="client-jar">
+        <java jar="${client-jar.dir}/${clientName}.jar" fork="true"/>
+    </target>
+
+
+    <target name="clean-build" depends="clean,server-jar,client-jar"/>
+
+    <target name="main" depends="clean,client-run"/>
+
+</project>
