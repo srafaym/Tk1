@@ -56,7 +56,7 @@
 	
 	<target name="wsimportTarget" depends="server-run">
 		<exec executable="${wsHome}/wsimport">
-			<arg line="-keep -d clients -s server -wsdllocation soap.wsdl"/>
+			<arg line="-keep -d clients -s server http://localhost:8090/soap?wsdl"/>
 		</exec>
 	</target>
 
