@@ -12,10 +12,12 @@ package view;
 public class ClientViewer {
 	
 	static Login loginUi = null;
-	
+
 	public static void main (String[] argv)
     {
 		loginUi = new Login();
 		loginUi.setVisible(true);
+		
+		
     }
 }

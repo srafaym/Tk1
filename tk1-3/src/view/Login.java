@@ -17,8 +17,9 @@ import model.Client;
  */
 public class Login extends javax.swing.JFrame {
 
+	static TopicsViewer topicspublisher = null;
     /**
-     * Creates new form LoginUi
+     * Creates new form Login
      */
     public Login() {
         initComponents();
@@ -119,6 +120,11 @@ public class Login extends javax.swing.JFrame {
             
             System.out.println("trying to connect");
             client.connect();
+            
+        	
+        	topicspublisher = new TopicsViewer();
+        	topicspublisher.setVisible(true);
+        	
             this.setVisible(false);
         }
     }                                           
