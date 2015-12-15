@@ -5,11 +5,9 @@
  */
 package view;
 
-import controller.SessionManager;
+
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-
-import model.Client;
 
 /**
  *
@@ -17,7 +15,6 @@ import model.Client;
  */
 public class Login extends javax.swing.JFrame {
 
-	static TopicsViewer topicspublisher = null;
     /**
      * Creates new form Login
      */
@@ -114,17 +111,8 @@ public class Login extends javax.swing.JFrame {
         if (jTextField_Username.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Please enter you User Name.");
         } else {
-            
-        	String id = "Default";
-            Client client = new Client(jTextField_Username.getText());
-            
-            System.out.println("trying to connect");
-            client.connect();
-            
-        	
-        	topicspublisher = new TopicsViewer();
-        	topicspublisher.setVisible(true);
-        	
+            TopicsViewer feedpublisherGUI = new TopicsViewer(jTextField_Username.getText());
+            feedpublisherGUI.setVisible(true);
             this.setVisible(false);
         }
     }                                           
