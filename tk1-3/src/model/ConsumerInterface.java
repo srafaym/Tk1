@@ -8,6 +8,7 @@ package model;
 import java.util.Map;
 import javax.jms.Destination;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 
 /**
  *
@@ -47,4 +48,9 @@ public interface ConsumerInterface {
      * @return array of names of the followed users/clients 
      */
     public String[] getFollowedClients();
+    /**
+     * Setting the message listener for this consumer
+     * @param listener 
+     */
+    public void setMessageListener(MessageListener listener);
 }

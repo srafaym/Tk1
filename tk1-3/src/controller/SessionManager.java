@@ -62,7 +62,7 @@ public class SessionManager {
             connection.setClientID(cliendId);
         } catch (javax.jms.InvalidClientIDException ex) {
             status = 1;
-            Logger.getLogger(SessionManager.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(SessionManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JMSException ex) {
             status = 2;
             Logger.getLogger(SessionManager.class.getName()).log(Level.SEVERE, null, ex);

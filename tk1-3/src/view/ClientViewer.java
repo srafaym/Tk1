@@ -17,7 +17,8 @@ public class ClientViewer {
     {
 		loginUi = new Login();
 		loginUi.setVisible(true);
-		
+		loginUi = new Login();
+                loginUi.setVisible(true);
 		
     }
 }

@@ -39,6 +39,20 @@ public class TopicsViewer extends javax.swing.JFrame implements Runnable {
         Thread receivingThread = new Thread(this);
         receivingThread.start();
     }
+    public TopicsViewer(Client clt) {
+        initComponents();
+        
+        client = clt;
+        Username = client.getClientId();
+        jLabel_Username.setText(Username);
+
+        System.out.println("trying to connect");
+        client.connect();
+        
+        
+        Thread receivingThread = new Thread(this);
+        receivingThread.start();
+    }
 
     public TopicsViewer() {
         initComponents();
@@ -127,8 +141,8 @@ public class TopicsViewer extends javax.swing.JFrame implements Runnable {
         						.addComponent(tagsField, GroupLayout.PREFERRED_SIZE, 250, GroupLayout.PREFERRED_SIZE))
         					.addGap(18)
         					.addComponent(postBlog, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        				.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        			.addGap(601))
+        				.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 370, GroupLayout.PREFERRED_SIZE))
+        			.addGap(21))
         		.addGroup(jPanel1Layout.createSequentialGroup()
         			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
         				.addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 44, GroupLayout.PREFERRED_SIZE)
@@ -218,15 +232,15 @@ public class TopicsViewer extends javax.swing.JFrame implements Runnable {
         layout.setHorizontalGroup(
         	layout.createParallelGroup(Alignment.LEADING)
         		.addGroup(layout.createSequentialGroup()
-        			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
-        				.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        			.addGroup(layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(layout.createSequentialGroup()
         					.addGap(241)
         					.addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 173, GroupLayout.PREFERRED_SIZE))
-        				.addGroup(Alignment.LEADING, layout.createSequentialGroup()
+        				.addGroup(layout.createSequentialGroup()
         					.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         					.addPreferredGap(ComponentPlacement.RELATED)
-        					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 350, GroupLayout.PREFERRED_SIZE)))
-        			.addPreferredGap(ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+        					.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, 395, GroupLayout.PREFERRED_SIZE)))
+        			.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         			.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
         			.addGap(257))
         		.addGroup(layout.createSequentialGroup()
@@ -245,12 +259,12 @@ public class TopicsViewer extends javax.swing.JFrame implements Runnable {
         					.addComponent(jLabel_Username, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
         					.addPreferredGap(ComponentPlacement.UNRELATED)))
         			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        				.addGroup(layout.createParallelGroup(Alignment.LEADING)
-        					.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-        					.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         				.addGroup(layout.createSequentialGroup()
         					.addGap(109)
-        					.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+        					.addComponent(filler1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+        					.addComponent(jPanel1, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+        					.addComponent(jPanel2, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
         			.addContainerGap(26, Short.MAX_VALUE))
         );
         getContentPane().setLayout(layout);
@@ -258,14 +272,31 @@ public class TopicsViewer extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>                        
 
-    public String addToFollowingList() {
-        String SearchUser = searchUser.getText();
-        return SearchUser;
-    }
 
     private void followButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        String searchtopicorusername = addToFollowingList();
+        String searchtopicorusername = searchUser.getText();
         client.consumer.subscribe(searchtopicorusername);
+        
+        followingListArray.add(searchtopicorusername);
+        String[] stringsL = new String[followingListArray.size()];
+        stringsL = followingListArray.toArray(stringsL);
+        final String[] strings2 = stringsL;
+
+        followingList.setModel(new javax.swing.AbstractListModel() {
+            @Override
+            public boolean equals(Object o) {
+                return super.equals(o); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            public int getSize() {
+                return strings2.length;
+            }
+
+            public Object getElementAt(int i) {
+                return strings2[i];
+            }
+        });
+        
     }                                            
 
     private void postBlogActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -273,13 +304,39 @@ public class TopicsViewer extends javax.swing.JFrame implements Runnable {
         if (topicField.getText().equals("") || blogField.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Title and Body are mandatory.");
         } else {
+        	String msgBody = "msg";
+        	String topic = "topic";
+        	String tags = "tags";
+        	
+        	msgBody = blogField.getText();
+        	topic = topicField.getText();
+        	tags = tagsField.getText();
+        	
         	TextMessage msg =  client.createTextMessage("Message from: "+Username);
-            client.publisher.publish(msg);
-            String topic = topicField.getText();
+            topic = topicField.getText();
             
+            client.publisher.publish(msg);         
             client.publisher.createTopic(topic);
             client.consumer.subscribe(topic);
             client.publisher.publishToTopic(topic, msg);
+            
+            String blogPostValues = "Topic:" + topic + ", Details: " + msgBody + ", Tags: " + tags;
+
+            blogPostArray.add(blogPostValues);
+            String[] stringsL = new String[blogPostArray.size()];
+            stringsL = blogPostArray.toArray(stringsL);
+            final String[] strings2 = stringsL;
+
+            feeds.setModel(new javax.swing.AbstractListModel() {
+                public int getSize() {
+                    return strings2.length;
+                }
+
+                public Object getElementAt(int i) {
+                    return strings2[i];
+                }
+            });
+            
         	
         }
     }                                        
@@ -315,8 +372,38 @@ public class TopicsViewer extends javax.swing.JFrame implements Runnable {
 
     public Thread receivingThread;
 
+    private void insertInFeeds(String title,String msgbody,String tags) {
+
+        String blogPostValues = "Topic:" + title+ ",Details: " + msgbody + ", Tags: " + tags;
+
+        blogPostArray.add(blogPostValues);
+        String[] stringsL = new String[blogPostArray.size()];
+        stringsL = blogPostArray.toArray(stringsL);
+        final String[] strings2 = stringsL;
+
+        feeds.setModel(new javax.swing.AbstractListModel() {
+            public int getSize() {
+                return strings2.length;
+            }
+
+            public Object getElementAt(int i) {
+                return strings2[i];
+            }
+        });
+    }
+
+    
     @Override
     public void run() {
+    	
+    	String [] followedclients = client.consumer.getFollowedClients();
+    	String [] followedtopics = client.consumer.getFollowedTopics();
+    	
+    	
+    	
+    	
+    	receivingThread = new Thread(this);
+        receivingThread.start();
         
     }
 

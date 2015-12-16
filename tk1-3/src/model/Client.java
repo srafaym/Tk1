@@ -114,6 +114,14 @@ public class Client implements LoginInterface{
         return txtmsg;
     }
     
+    public String getClientId()
+    {
+        return new String(myId);
+    }
+    public String getBrokerURL()
+    {
+        return new String(brokerUrl);
+    }
 //public static void main (String[] argv)
  //   {
 //        if(argv.length<1)

@@ -58,7 +58,7 @@ public class Consumer implements ConsumerInterface{
         //creating map of followed clients
         //a client always follow himself
         followedClients= new HashMap<>();
-        this.follow(myClientId);
+        //this.follow(myClientId);
     }
     
     @Override
@@ -178,6 +178,11 @@ public class Consumer implements ConsumerInterface{
             clientsLock.unlock();
         }
         clientsLock.unlock();
+    }
+    @Override
+    public void setMessageListener(MessageListener listener)
+    {
+        this.msgListener = listener;
     }
     
 }

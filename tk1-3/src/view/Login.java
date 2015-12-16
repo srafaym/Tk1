@@ -6,8 +6,15 @@
 package view;
 
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import model.Client;
+import java.awt.event.ActionEvent;
 
 /**
  *
@@ -18,6 +25,7 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
+    private Client client=null;
     public Login() {
         initComponents();
     }
@@ -52,38 +60,52 @@ public class Login extends javax.swing.JFrame {
         });
 
         jLabel2.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        jLabel2.setText("Micro Blogging Service Login");
+        jLabel2.setText("Blogging Service");
+        
+        JButton btnCancel = new JButton("Cancel");
+        btnCancel.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		 System.exit(0);
+        	}
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField_Username))
-                .addGap(153, 153, 153))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(203, 203, 203)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        				.addGroup(Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(btnCancel)
+        					.addPreferredGap(ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+        					.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addGap(58)
+        					.addComponent(jLabel2))
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jLabel1))
+        				.addGroup(jPanel1Layout.createSequentialGroup()
+        					.addContainerGap()
+        					.addComponent(jTextField_Username, GroupLayout.DEFAULT_SIZE, 196, Short.MAX_VALUE)))
+        			.addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(jLabel2)
-                .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        	jPanel1Layout.createParallelGroup(Alignment.LEADING)
+        		.addGroup(jPanel1Layout.createSequentialGroup()
+        			.addGap(21)
+        			.addComponent(jLabel2)
+        			.addGap(18)
+        			.addComponent(jLabel1)
+        			.addGap(9)
+        			.addComponent(jTextField_Username, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+        			.addPreferredGap(ComponentPlacement.RELATED)
+        			.addGroup(jPanel1Layout.createParallelGroup(Alignment.BASELINE)
+        				.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+        				.addComponent(btnCancel))
+        			.addContainerGap(18, Short.MAX_VALUE))
         );
+        jPanel1.setLayout(jPanel1Layout);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,15 +129,33 @@ public class Login extends javax.swing.JFrame {
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
-
-        if (jTextField_Username.getText().equals("")) {
+        String clientId = jTextField_Username.getText();
+        if (clientId.equals("")) {
             JOptionPane.showMessageDialog(null, "Please enter you User Name.");
+            return;
+        }
+        if (client == null) {
+            client = new Client(clientId); // first attent to login
         } else {
-            TopicsViewer feedpublisherGUI = new TopicsViewer(jTextField_Username.getText());
+            client.setClientId(clientId);
+        }
+        boolean status = client.connect();
+        System.out.println(status);
+        if(status)
+        {
+            TopicsViewer feedpublisherGUI = new TopicsViewer(client);
             feedpublisherGUI.setVisible(true);
             this.setVisible(false);
         }
-    }                                           
+        else
+        {
+           jTextField_Username.setForeground(Color.RED);
+           jTextField_Username.setText("Username  already used");
+           //jTextField_Username.setForeground(Color.BLACK);
+        }
+
+    }
+                                         
 
     /**
      * @param args the command line arguments
@@ -158,5 +198,4 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField_Username;
-    // End of variables declaration                   
 }
